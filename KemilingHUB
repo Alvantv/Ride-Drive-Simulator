@@ -1,0 +1,305 @@
+--[[
+
+Open source
+Made by ge8395
+
+]]
+
+local CoreGui = game:GetService("StarterGui")
+local Players = game:GetService("Players")
+
+local function isNumber(str)
+  if tonumber(str) ~= nil or str == 'inf' then
+    return true
+  end
+end
+
+getgenv().Walkspeed = game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed
+getgenv().Jumppower = game:GetService("Players").LocalPlayer.Character.Humanoid.JumpPower
+
+getgenv().TPSpeed = 3
+getgenv().TPWalk = false
+
+--// UI
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Vcsk/UI-Library/main/Source/MyUILib(Unamed).lua"))();
+local Window = Library:Create("KemilingHUB by ge8395")
+
+local HomeTab = Window:Tab("Home","rbxassetid://10888331510")
+local PlayerTab = Window:Tab("Players","rbxassetid://12296135476")
+local Teleport = Window:Tab("Teleport","rbxassetid://12308581351")
+
+HomeTab:InfoLabel("Jangan Lupa Hidupkan AntiAFK")
+
+HomeTab:Section("Main")
+
+HomeTab:Button("ANTI AFK", function(state)
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/KemilingHUB/antiafk/refs/heads/main/afk'))()
+end)
+
+HomeTab:Keybind("Toggle UI", Enum.KeyCode.LeftControl, function()
+    Library:ToggleUI()
+end)
+
+PlayerTab:TextBox("WalkSpeed", function(value)
+    getgenv().Walkspeed = value
+    pcall(function()
+        game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end)
+end)
+
+PlayerTab:Toggle("Loop WalkSpeed", function(state)
+    getgenv().loopW = state
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if loopW == true then
+            pcall(function()
+                game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = Walkspeed
+            end)
+        end
+    end)
+end)
+
+PlayerTab:TextBox("JumpPower", function(value)
+    getgenv().Jumppower = value
+    pcall(function()
+        game:GetService("Players").LocalPlayer.Character.Humanoid.JumpPower = value
+    end)
+end)
+
+PlayerTab:Toggle("Loop JumpPower", function(state)
+    getgenv().loopJ = state
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if loopJ == true then
+            pcall(function()
+                game:GetService("Players").LocalPlayer.Character.Humanoid.JumpPower = Jumppower
+            end)
+        end
+    end)
+end)
+
+PlayerTab:TextBox("TP Speed", function(value)
+getgenv().TPSpeed = value
+end)
+
+PlayerTab:Toggle("TP Walk", function(s)
+getgenv().TPWalk = s
+local hb = game:GetService("RunService").Heartbeat
+local player = game:GetService("Players")
+local lplr = player.LocalPlayer
+local chr = lplr.Character
+local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
+while getgenv().TPWalk and hb:Wait() and chr and hum and hum.Parent do
+  if hum.MoveDirection.Magnitude > 0 then
+    if getgenv().TPSpeed and isNumber(getgenv().TPSpeed) then
+      chr:TranslateBy(hum.MoveDirection * tonumber(getgenv().TPSpeed))
+    else
+      chr:TranslateBy(hum.MoveDirection)
+    end
+  end
+end
+end)
+
+PlayerTab:Slider("Fov", game.Workspace.CurrentCamera.FieldOfView,120, function(v)
+     game.Workspace.CurrentCamera.FieldOfView = v
+end)
+
+PlayerTab:Toggle("Noclip", function(s)
+    getgenv().Noclip = s
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if Noclip == true then
+            game:GetService("RunService").Stepped:wait()
+            game.Players.LocalPlayer.Character.Head.CanCollide = false
+            game.Players.LocalPlayer.Character.Torso.CanCollide = false
+        end
+    end)
+end)
+
+PlayerTab:Toggle("Infinite Jump", function(s)
+getgenv().InfJ = s
+    game:GetService("UserInputService").JumpRequest:connect(function()
+        if InfJ == true then
+            game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+        end
+    end)
+end)
+
+PlayerTab:Button("ESP", function(state)
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Alvantv/esp/refs/heads/main/KemilingHUB'))()
+end)
+
+PlayerTab:Button("Rejoin", function()
+    game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
+end)
+
+Teleport:InfoLabel("Jangan Spam")
+
+Teleport:InfoLabel("Other")
+Teleport:Button("Job Selection", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6822, 5, 3081)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Helm Store", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6933, 8, 3047)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Rajawali Office", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6166, 14, -412)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:InfoLabel("Hallowen")
+Teleport:Button("Claim Quest", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6812, 7, 2125)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 1", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6741, 2, 2076)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 2", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-8714, 26, 3223)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 3", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-9709, 26, 2513)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 4", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-10663, 39, 2439)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 5", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-7257, 25, -53)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 6", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-7018, 122, 38)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 7", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6777, 8, -316)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 8", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-4247, 24, 314)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 9", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-5181, 10, -3180)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 10", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-4073, 19, -3048)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 11", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2147, 9, 190)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 12", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-3621, 10, -2528)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 13", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2699, 29, 99)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 14", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(6074, 110, -3481)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 15", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4961, 112, 385)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 16", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4925, 109, 151)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 17", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(7168, 138, -1417)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 18", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(6994, 108, -1677)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 19", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4530, 112, 805)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
+Teleport:Button("Kucing 20", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2775, 30, 432)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+
